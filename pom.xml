@@ -98,6 +98,8 @@
                             <modelPackage>com.example.mortgageservice.model.generated</modelPackage>
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>
+                            <!-- Prevent generating unwanted test classes -->
+                            <ignoreFileOverride>${project.basedir}/.openapi-generator-ignore</ignoreFileOverride>
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>false</interfaceOnly>
@@ -150,6 +152,17 @@
                     <image>
                         <name>${project.artifactId}:${project.version}</name>
                     </image>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/OpenApiGeneratorApplicationTests*</exclude>
+                        <exclude>**/org/openapitools/**</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <!--<plugin>

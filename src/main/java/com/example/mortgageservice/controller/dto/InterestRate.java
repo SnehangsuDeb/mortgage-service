@@ -9,6 +9,8 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -16,6 +18,8 @@ import java.util.Objects;
  * Interest rate details
  */
 
+@Setter
+@Getter
 @Schema(name = "InterestRate", description = "Interest rate details")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-10-13T17:12:32.542554800+05:30[Asia/Calcutta]", comments = "Generator version: 7.7.0")
 public class InterestRate {
@@ -92,11 +96,7 @@ public class InterestRate {
     return rate;
   }
 
-  public void setRate(Double rate) {
-    this.rate = rate;
-  }
-
-  public InterestRate tenure(Integer tenure) {
+    public InterestRate tenure(Integer tenure) {
     this.tenure = tenure;
     return this;
   }
@@ -113,11 +113,7 @@ public class InterestRate {
     return tenure;
   }
 
-  public void setTenure(Integer tenure) {
-    this.tenure = tenure;
-  }
-
-  public InterestRate interestType(InterestTypeEnum interestType) {
+    public InterestRate interestType(InterestTypeEnum interestType) {
     this.interestType = interestType;
     return this;
   }
@@ -133,11 +129,7 @@ public class InterestRate {
     return interestType;
   }
 
-  public void setInterestType(InterestTypeEnum interestType) {
-    this.interestType = interestType;
-  }
-
-  @Override
+    @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
