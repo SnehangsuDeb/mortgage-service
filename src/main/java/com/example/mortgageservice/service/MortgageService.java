@@ -3,9 +3,11 @@ package com.example.mortgageservice.service;
 import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
 import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
 import com.example.mortgageservice.controller.dto.MortgageRate;
+import com.example.mortgageservice.controller.exceptions.NotFoundException;
 import com.example.mortgageservice.mapper.MortgageMapper;
 import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.repository.MortgageRateRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -13,6 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class MortgageService {
     private final MortgageRateRepository mortgageRateRepository;
     private final MortgageMapper mortgageMapper;
@@ -39,6 +42,7 @@ public class MortgageService {
     }
 
     public MortgageCheckResponse mortgageCheck(MortgageCheckRequest request){
+        log.info("Mortgage check request received: {}", request);
         var validation = mortgageRuleService.requestedLoanValidation(
                 request.getIncome().getValue(), request.getLoanValue().getValue(), request.getHomeValue().getValue());
         if (validation != null) {
@@ -46,7 +50,7 @@ public class MortgageService {
         }
 
         var rateResponse = getRateByMaturityPeriod(request.getMaturityPeriod())
-                .orElseThrow(() -> new NoSuchElementException(
+                .orElseThrow(() -> new NotFoundException(
                         "No mortgage rates found for maturity period: " + request.getMaturityPeriod()));
 
         if (rateResponse.getMortgageRates().isEmpty()) {

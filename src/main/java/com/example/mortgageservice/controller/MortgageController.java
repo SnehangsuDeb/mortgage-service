@@ -3,7 +3,7 @@ package com.example.mortgageservice.controller;
 import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
 import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
-import com.example.mortgageservice.controller.error.ApiError;
+import com.example.mortgageservice.controller.exceptions.ApiError;
 import com.example.mortgageservice.service.MortgageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,15 +30,7 @@ public class MortgageController {
     /**
      * GET /api/interest-rates : List available interest rates
      *
-     * @return Invalid input (status code 400)
-     *         or Unauthorized (status code 401)
-     *         or Forbidden (status code 403)
-     *         or Interest rates not found (status code 404)
-     *         or Too many requests (status code 429)
-     *         or Internal server error (status code 500)
-     *         or Service unavailable (status code 503)
-     *         or No content (status code 204)
-     *         or OK (status code 200)
+     * @return OK (status code 200)
      */
     @Operation(
             operationId = "getInterestRates",
@@ -85,13 +76,6 @@ public class MortgageController {
      *
      * @param mortgageCheckRequest  (required)
      * @return Mortgage Details (status code 200)
-     *         or Invalid input (status code 400)
-     *         or Unauthorized (status code 401)
-     *         or Forbidden (status code 403)
-     *         or Unprocessable entity (status code 422)
-     *         or Too many requests (status code 429)
-     *         or Internal server error (status code 500)
-     *         or Service unavailable (status code 503)
      */
     @Operation(
             operationId = "mortgageCheck",

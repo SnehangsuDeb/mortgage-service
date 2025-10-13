@@ -1,10 +1,12 @@
 package com.example.mortgageservice.rule;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Component
+@Slf4j
 public class HomeValueRule implements MortgageRule{
 
     @Override
@@ -21,6 +23,7 @@ public class HomeValueRule implements MortgageRule{
         if (loanAmount.signum() <= 0) {
             return "Loan amount must be greater than 0";
         }
+        log.info("LoanAmount: {}, HomeValue: {}", loanAmount, homeValue);
         if (loanAmount.compareTo(homeValue) > 0) {
             return "Loan amount cannot exceed home value";
         }

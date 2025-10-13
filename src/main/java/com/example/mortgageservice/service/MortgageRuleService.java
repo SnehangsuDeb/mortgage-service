@@ -1,5 +1,6 @@
 package com.example.mortgageservice.service;
 
+import com.example.mortgageservice.controller.exceptions.BadRequestException;
 import com.example.mortgageservice.rule.MortgageRule;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class MortgageRuleService {
         for (MortgageRule rule : rules) {
             String error = rule.validate(income, loanAmount, homeValue);
             if (error != null) {
-                return error;
+                throw new BadRequestException(error);
             }
         }
         return null;
