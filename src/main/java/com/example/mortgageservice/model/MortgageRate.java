@@ -1,4 +1,4 @@
-package com.example.mortgageservice.controller.dto;
+package com.example.mortgageservice.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

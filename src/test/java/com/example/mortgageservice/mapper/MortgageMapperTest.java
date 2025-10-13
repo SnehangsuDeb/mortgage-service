@@ -1,7 +1,7 @@
 package com.example.mortgageservice.mapper;
 
-import com.example.mortgageservice.controller.dto.MortgageRate;
-import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
+import com.example.mortgageservice.model.MortgageRate;
+import com.example.mortgageservice.model.MortgageRatesResponse;
 import com.example.mortgageservice.entities.MortgageRates;
 import org.junit.jupiter.api.Test;
 

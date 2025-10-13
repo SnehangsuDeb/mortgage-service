@@ -1,4 +1,4 @@
-package com.example.mortgageservice.controller.exceptions;
+package com.example.mortgageservice.exceptions;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;

@@ -18,8 +18,8 @@ class InitialDataLoaderTest {
         loader.run();
 
         ArgumentCaptor<MortgageRates> captor = ArgumentCaptor.forClass(MortgageRates.class);
-        verify(repo, times(3)).save(captor.capture());
-        assertEquals(3, captor.getAllValues().size());
+        verify(repo, times(4)).save(captor.capture());
+        assertEquals(4, captor.getAllValues().size());
         MortgageRates first = captor.getAllValues().get(0);
     }
 }

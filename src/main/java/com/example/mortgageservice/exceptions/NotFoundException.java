@@ -1,4 +1,4 @@
-package com.example.mortgageservice.controller.exceptions;
+package com.example.mortgageservice.exceptions;
 
 import lombok.Data;
 

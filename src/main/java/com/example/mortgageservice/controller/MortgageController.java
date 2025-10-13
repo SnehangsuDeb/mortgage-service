@@ -1,9 +1,9 @@
 package com.example.mortgageservice.controller;
 
-import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
-import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
-import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
-import com.example.mortgageservice.controller.exceptions.ApiError;
+import com.example.mortgageservice.model.MortgageRatesResponse;
+import com.example.mortgageservice.model.MortgageCheckRequest;
+import com.example.mortgageservice.model.MortgageCheckResponse;
+import com.example.mortgageservice.exceptions.ApiError;
 import com.example.mortgageservice.service.MortgageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -68,7 +68,7 @@ public class MortgageController {
 
 
     /**
-     * POST /api/mortgage-check : Evaluate mortgage check
+     * POST /api/mortgage-checking : Evaluate mortgage check
      *
      * @param mortgageCheckRequest  (required)
      * @return Mortgage Details (status code 200)

@@ -1,6 +1,6 @@
 package com.example.mortgageservice.service;
 
-import com.example.mortgageservice.controller.exceptions.BadRequestException;
+import com.example.mortgageservice.exceptions.BadRequestException;
 import com.example.mortgageservice.rule.MortgageRule;
 import org.junit.jupiter.api.Test;
 

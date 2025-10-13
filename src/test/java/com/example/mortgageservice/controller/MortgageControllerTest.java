@@ -1,12 +1,16 @@
 package com.example.mortgageservice.controller;
 
-import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
-import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
-import com.example.mortgageservice.controller.dto.MortgageRate;
-import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
+import com.example.mortgageservice.model.MortgageCheckRequest;
+import com.example.mortgageservice.model.MortgageCheckResponse;
+import com.example.mortgageservice.model.MortgageRate;
+import com.example.mortgageservice.model.MortgageRatesResponse;
+import com.example.mortgageservice.ratelimit.RateLimiterService;
+import com.example.mortgageservice.ratelimit.RateLimitingFilter;
 import com.example.mortgageservice.service.MortgageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,6 +36,8 @@ class MortgageControllerTest {
 
     @MockBean
     private MortgageService mortgageService;
+    @MockBean
+    private RateLimiterService rateLimiterService;
 
     @Test
     void getInterestRates_returnsOkWithPayload() throws Exception {

@@ -1,4 +1,4 @@
-package com.example.mortgageservice.controller.exceptions;
+package com.example.mortgageservice.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

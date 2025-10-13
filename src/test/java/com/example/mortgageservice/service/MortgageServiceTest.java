@@ -1,6 +1,6 @@
 package com.example.mortgageservice.service;
 
-import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
+import com.example.mortgageservice.model.MortgageRatesResponse;
 import com.example.mortgageservice.entities.MortgageRates;
 import com.example.mortgageservice.mapper.MortgageMapper;
 import com.example.mortgageservice.repository.MortgageRateRepository;

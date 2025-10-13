@@ -1,11 +1,11 @@
 package com.example.mortgageservice.service;
 
-import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
-import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
-import com.example.mortgageservice.controller.dto.MortgageRate;
-import com.example.mortgageservice.controller.exceptions.NotFoundException;
+import com.example.mortgageservice.model.MortgageCheckRequest;
+import com.example.mortgageservice.model.MortgageCheckResponse;
+import com.example.mortgageservice.model.MortgageRate;
+import com.example.mortgageservice.exceptions.NotFoundException;
 import com.example.mortgageservice.mapper.MortgageMapper;
-import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
+import com.example.mortgageservice.model.MortgageRatesResponse;
 import com.example.mortgageservice.repository.MortgageRateRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
