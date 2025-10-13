@@ -1,8 +1,5 @@
 package com.example.mortgageservice.controller;
 
-import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
-import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
-import com.example.mortgageservice.controller.dto.Amount;
 import com.example.mortgageservice.controller.dto.MortgageRate;
 import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.service.MortgageService;
@@ -14,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.mockito.Mockito.when;

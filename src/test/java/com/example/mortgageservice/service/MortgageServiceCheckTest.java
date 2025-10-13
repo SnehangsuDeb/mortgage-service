@@ -1,17 +1,8 @@
 package com.example.mortgageservice.service;
 
-import com.example.mortgageservice.controller.dto.Amount;
-import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
-import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
-import com.example.mortgageservice.controller.dto.MortgageRate;
-import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.mapper.MortgageMapper;
 import com.example.mortgageservice.repository.MortgageRateRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
