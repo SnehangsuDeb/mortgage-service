@@ -1,0 +1,26 @@
+package com.example.mortgageservice.service;
+
+import com.example.mortgageservice.rule.MortgageRule;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Service
+public class MortgageRuleService {
+    private List<MortgageRule> rules;
+
+    public MortgageRuleService(List<MortgageRule> rules) {
+        this.rules = rules;
+    }
+
+    public String requestedLoanValidation(BigDecimal income, BigDecimal loanAmount, BigDecimal homeValue){
+        for (MortgageRule rule : rules) {
+            String error = rule.validate(income, loanAmount, homeValue);
+            if (error != null) {
+                return error;
+            }
+        }
+        return null;
+    }
+}

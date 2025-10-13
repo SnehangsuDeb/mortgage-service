@@ -1,9 +1,8 @@
 package com.example.mortgageservice.service;
 
-import com.example.mortgageservice.controller.dto.InterestRatesResponse;
-import com.example.mortgageservice.entities.InterestRates;
+import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
+import com.example.mortgageservice.entities.MortgageRates;
 import com.example.mortgageservice.mapper.MortgageMapper;
-import com.example.mortgageservice.repository.InterestRepository;
 import com.example.mortgageservice.repository.MortgageRateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ import static org.mockito.Mockito.*;
 class MortgageServiceTest {
 
     private MortgageRateRepository mortgageRateRepository;
-    private InterestRepository interestRepository;
+    private MortgageRuleService mortgageRuleService;
     private MortgageMapper mortgageMapper;
 
     private MortgageService service;
@@ -25,26 +24,27 @@ class MortgageServiceTest {
     @BeforeEach
     void setUp() {
         mortgageRateRepository = mock(MortgageRateRepository.class);
-        interestRepository = mock(InterestRepository.class);
         mortgageMapper = mock(MortgageMapper.class);
-        service = new MortgageService(mortgageRateRepository, interestRepository, mortgageMapper);
+        mortgageRuleService=mock(MortgageRuleService.class);
+
+        service = new MortgageService(mortgageRateRepository, mortgageMapper, mortgageRuleService);
     }
 
     @Test
     void getInterestRates_fetchesEntities_andMapsToResponse() {
-        List<InterestRates> entities = List.of(
-                InterestRates.builder().rate(3.9).tenure(10).type("FIXED").build()
+        List<MortgageRates> entities = List.of(
+                MortgageRates.builder().rate(3.9).mortgagePeriod(10).type("FIXED").build()
         );
-        InterestRatesResponse mapped = new InterestRatesResponse();
+        MortgageRatesResponse mapped = new MortgageRatesResponse();
 
-        when(interestRepository.findAll()).thenReturn(entities);
-        when(mortgageMapper.mapInterestRates(ArgumentMatchers.eq(entities))).thenReturn(mapped);
+        when(mortgageRateRepository.findAll()).thenReturn(entities);
+        when(mortgageMapper.mapMortgageRates(ArgumentMatchers.eq(entities))).thenReturn(mapped);
 
-        InterestRatesResponse result = service.getInterestRates();
+        MortgageRatesResponse result = service.getInterestRates();
 
         assertSame(mapped, result);
-        verify(interestRepository, times(1)).findAll();
-        verify(mortgageMapper, times(1)).mapInterestRates(entities);
-        verifyNoInteractions(mortgageRateRepository);
+        verify(mortgageRateRepository, times(1)).findAll();
+        verify(mortgageMapper, times(1)).mapMortgageRates(entities);
+        verifyNoMoreInteractions(mortgageRateRepository, mortgageMapper);
     }
 }

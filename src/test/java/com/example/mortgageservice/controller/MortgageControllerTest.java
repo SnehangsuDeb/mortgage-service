@@ -1,7 +1,7 @@
 package com.example.mortgageservice.controller;
 
-import com.example.mortgageservice.controller.dto.InterestRate;
-import com.example.mortgageservice.controller.dto.InterestRatesResponse;
+import com.example.mortgageservice.controller.dto.MortgageRate;
+import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.service.MortgageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +27,16 @@ class MortgageControllerTest {
 
     @Test
     void getInterestRates_returnsOkWithPayload() throws Exception {
-        InterestRatesResponse response = new InterestRatesResponse();
-        response.setInterestRates(List.of(new InterestRate(5.25, 15, InterestRate.InterestTypeEnum.FIXED)));
+        MortgageRatesResponse response = new MortgageRatesResponse();
+        response.setMortgageRates(List.of(new MortgageRate(5.25, 15, MortgageRate.InterestTypeEnum.FIXED)));
 
         when(mortgageService.getInterestRates()).thenReturn(response);
 
         mockMvc.perform(get("/api/interest-rates").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.interestRates[0].rate").value(5.25))
-                .andExpect(jsonPath("$.interestRates[0].tenure").value(15))
-                .andExpect(jsonPath("$.interestRates[0].interestType").value("FIXED"));
+                .andExpect(jsonPath("$.mortgageRates[0].rate").value(5.25))
+                .andExpect(jsonPath("$.mortgageRates[0].tenure").value(15))
+                .andExpect(jsonPath("$.mortgageRates[0].interestType").value("FIXED"));
     }
 }

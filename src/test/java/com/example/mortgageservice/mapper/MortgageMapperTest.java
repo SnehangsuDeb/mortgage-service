@@ -1,8 +1,8 @@
 package com.example.mortgageservice.mapper;
 
-import com.example.mortgageservice.controller.dto.InterestRate;
-import com.example.mortgageservice.controller.dto.InterestRatesResponse;
-import com.example.mortgageservice.entities.InterestRates;
+import com.example.mortgageservice.controller.dto.MortgageRate;
+import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
+import com.example.mortgageservice.entities.MortgageRates;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,41 +15,41 @@ class MortgageMapperTest {
 
     @Test
     void mapInterestRates_returnsEmptyResponse_whenListIsNull() {
-        InterestRatesResponse response = mapper.mapInterestRates(null);
+        MortgageRatesResponse response = mapper.mapMortgageRates(null);
         assertNotNull(response);
-        assertNotNull(response.getInterestRates());
-        assertTrue(response.getInterestRates().isEmpty());
+        assertNotNull(response.getMortgageRates());
+        assertTrue(response.getMortgageRates().isEmpty());
     }
 
     @Test
     void mapInterestRates_returnsEmptyResponse_whenListIsEmpty() {
-        InterestRatesResponse response = mapper.mapInterestRates(List.of());
+        MortgageRatesResponse response = mapper.mapMortgageRates(List.of());
         assertNotNull(response);
-        assertNotNull(response.getInterestRates());
-        assertTrue(response.getInterestRates().isEmpty());
+        assertNotNull(response.getMortgageRates());
+        assertTrue(response.getMortgageRates().isEmpty());
     }
 
     @Test
     void mapInterestRates_mapsAllFieldsCorrectly() {
-        List<InterestRates> stored = List.of(
-                InterestRates.builder().rate(3.9).tenure(10).type("FIXED").build(),
-                InterestRates.builder().rate(5.75).tenure(15).type("VARIABLE").build()
+        List<MortgageRates> stored = List.of(
+                MortgageRates.builder().rate(3.9).mortgagePeriod(10).type("FIXED").build(),
+                MortgageRates.builder().rate(5.75).mortgagePeriod(15).type("VARIABLE").build()
         );
 
-        InterestRatesResponse response = mapper.mapInterestRates(stored);
+        MortgageRatesResponse response = mapper.mapMortgageRates(stored);
 
         assertNotNull(response);
-        assertNotNull(response.getInterestRates());
-        assertEquals(2, response.getInterestRates().size());
+        assertNotNull(response.getMortgageRates());
+        assertEquals(2, response.getMortgageRates().size());
 
-        InterestRate first = response.getInterestRates().get(0);
+        MortgageRate first = response.getMortgageRates().get(0);
         assertEquals(3.9, first.getRate());
         assertEquals(10, first.getTenure());
-        assertEquals(InterestRate.InterestTypeEnum.FIXED, first.getInterestType());
+        assertEquals(MortgageRate.InterestTypeEnum.FIXED, first.getInterestType());
 
-        InterestRate second = response.getInterestRates().get(1);
+        MortgageRate second = response.getMortgageRates().get(1);
         assertEquals(5.75, second.getRate());
         assertEquals(15, second.getTenure());
-        assertEquals(InterestRate.InterestTypeEnum.VARIABLE, second.getInterestType());
+        assertEquals(MortgageRate.InterestTypeEnum.VARIABLE, second.getInterestType());
     }
 }

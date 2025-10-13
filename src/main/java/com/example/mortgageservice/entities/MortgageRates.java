@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InterestRates {
+public class MortgageRates {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double rate;
-    private Integer tenure;
+    private Integer mortgagePeriod;
     private String type;
 }

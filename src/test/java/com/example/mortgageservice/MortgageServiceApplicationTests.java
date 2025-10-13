@@ -1,6 +1,6 @@
 package com.example.mortgageservice;
 
-import com.example.mortgageservice.repository.InterestRepository;
+import com.example.mortgageservice.repository.MortgageRateRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,20 +16,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MortgageServiceApplicationTests {
 
     @Autowired
-    private InterestRepository interestRepository;
+    private MortgageRateRepository mortgageRateRepository;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void contextLoads() {
-        // Verifies the Spring context starts successfully
-    }
+    void contextLoads() {}
 
     @Test
     void h2IsSeededWithInterestRates() {
-        assertThat(interestRepository).isNotNull();
-        assertThat(interestRepository.findAll()).isNotEmpty();
+        assertThat(mortgageRateRepository).isNotNull();
+        assertThat(mortgageRateRepository.findAll()).isNotEmpty();
     }
 
     @Test
@@ -37,6 +35,6 @@ class MortgageServiceApplicationTests {
         mockMvc.perform(get("/api/interest-rates"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith("application/json"))
-                .andExpect(jsonPath("$.interestRates").isArray());
+                .andExpect(jsonPath("$.mortgageRates").isArray());
     }
 }

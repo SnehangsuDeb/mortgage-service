@@ -1,6 +1,6 @@
 package com.example.mortgageservice.controller;
 
-import com.example.mortgageservice.controller.dto.InterestRatesResponse;
+import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
 import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
 import com.example.mortgageservice.controller.error.ApiError;
@@ -69,12 +69,12 @@ public class MortgageController {
                     }),
                     @ApiResponse(responseCode = "204", description = "No content"),
                     @ApiResponse(responseCode = "200", description = "OK", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = InterestRatesResponse.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = MortgageRatesResponse.class))
                     })
             }
     )
     @RequestMapping(method = RequestMethod.GET, value = "/interest-rates")
-    public ResponseEntity<InterestRatesResponse> getInterestRates() {
+    public ResponseEntity<MortgageRatesResponse> getInterestRates() {
         return ResponseEntity.ok(mortgageService.getInterestRates());
 
     }
@@ -129,7 +129,7 @@ public class MortgageController {
     public ResponseEntity<MortgageCheckResponse> mortgageCheck(
             @Parameter(name = "MortgageCheckRequest", description = "", required = true) @Valid @RequestBody MortgageCheckRequest mortgageCheckRequest
     ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return ResponseEntity.ok(mortgageService.mortgageCheck(mortgageCheckRequest));
 
     }
 }

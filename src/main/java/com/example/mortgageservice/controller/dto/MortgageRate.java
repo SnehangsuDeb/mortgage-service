@@ -22,7 +22,7 @@ import java.util.Objects;
 @Getter
 @Schema(name = "InterestRate", description = "Interest rate details")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-10-13T17:12:32.542554800+05:30[Asia/Calcutta]", comments = "Generator version: 7.7.0")
-public class InterestRate {
+public class MortgageRate {
 
   private Double rate;
 
@@ -65,20 +65,20 @@ public class InterestRate {
 
   private InterestTypeEnum interestType;
 
-  public InterestRate() {
+  public MortgageRate() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public InterestRate(Double rate, Integer tenure, InterestTypeEnum interestType) {
+  public MortgageRate(Double rate, Integer tenure, InterestTypeEnum interestType) {
     this.rate = rate;
     this.tenure = tenure;
     this.interestType = interestType;
   }
 
-  public InterestRate rate(Double rate) {
+  public MortgageRate rate(Double rate) {
     this.rate = rate;
     return this;
   }
@@ -96,7 +96,7 @@ public class InterestRate {
     return rate;
   }
 
-    public InterestRate tenure(Integer tenure) {
+    public MortgageRate tenure(Integer tenure) {
     this.tenure = tenure;
     return this;
   }
@@ -113,7 +113,7 @@ public class InterestRate {
     return tenure;
   }
 
-    public InterestRate interestType(InterestTypeEnum interestType) {
+    public MortgageRate interestType(InterestTypeEnum interestType) {
     this.interestType = interestType;
     return this;
   }
@@ -137,10 +137,10 @@ public class InterestRate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InterestRate interestRate = (InterestRate) o;
-    return Objects.equals(this.rate, interestRate.rate) &&
-        Objects.equals(this.tenure, interestRate.tenure) &&
-        Objects.equals(this.interestType, interestRate.interestType);
+    MortgageRate mortgageRate = (MortgageRate) o;
+    return Objects.equals(this.rate, mortgageRate.rate) &&
+        Objects.equals(this.tenure, mortgageRate.tenure) &&
+        Objects.equals(this.interestType, mortgageRate.interestType);
   }
 
   @Override
