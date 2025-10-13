@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -44,8 +43,9 @@ public class MortgageService {
     public MortgageCheckResponse mortgageCheck(MortgageCheckRequest request){
         log.info("Mortgage check request received: {}", request);
         var validation = mortgageRuleService.requestedLoanValidation(
-                request.getIncome().getValue(), request.getLoanValue().getValue(), request.getHomeValue().getValue());
+                request.getIncome(), request.getLoanValue(), request.getHomeValue());
         if (validation != null) {
+            log.info("Validation error: {}", validation);
             return new MortgageCheckResponse(false, null);
         }
 
@@ -54,6 +54,7 @@ public class MortgageService {
                         "No mortgage rates found for maturity period: " + request.getMaturityPeriod()));
 
         if (rateResponse.getMortgageRates().isEmpty()) {
+            log.info("No mortgage rates found for maturity period: {}", request.getMaturityPeriod());
             return new MortgageCheckResponse(false, null);
         } else {
             MortgageRate selectedRate = rateResponse.getMortgageRates().get(0);
@@ -71,14 +72,13 @@ public class MortgageService {
      *  - else: payment = P * i * (1 + i)^n / ((1 + i)^n - 1)
      */
     private Double calculateMonthlyAmountFromTotalLoanAmount(MortgageCheckRequest request, MortgageRate mortgageRate) {
-        double principal = request.getLoanValue().getValue().doubleValue();
+        double principal = request.getLoanValue().doubleValue();
         int months = Math.toIntExact((long) mortgageRate.getTenure() * 12);
         if (months <= 0) {
             return null;
         }
 
         double monthlyRate = (mortgageRate.getRate() == null ? 0.0 : mortgageRate.getRate()) / 100.0 / 12.0;
-
         double payment;
         if (monthlyRate == 0.0) {
             payment = principal / months;
@@ -86,8 +86,6 @@ public class MortgageService {
             double factor = Math.pow(1.0 + monthlyRate, months);
             payment = principal * monthlyRate * factor / (factor - 1.0);
         }
-
-        // Round to 2 decimal places
         return Math.round(payment * 100.0) / 100.0;
     }
 }

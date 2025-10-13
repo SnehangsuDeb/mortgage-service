@@ -24,7 +24,6 @@ class MortgageRateRepositoryTest {
         List<MortgageRates> all = repository.findAll();
 
         assertTrue(all.size() >= 2);
-        // Optionally assert at least one FIXED and one VARIABLE present
         long fixed = all.stream().filter(r -> "FIXED".equals(r.getType())).count();
         long variable = all.stream().filter(r -> "VARIABLE".equals(r.getType())).count();
         assertTrue(fixed >= 0);

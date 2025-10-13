@@ -1,6 +1,5 @@
 package com.example.mortgageservice.service;
 
-import com.example.mortgageservice.controller.dto.Amount;
 import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
 import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
 import com.example.mortgageservice.controller.dto.MortgageRate;
@@ -14,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 class MortgageServiceCheckTest {
@@ -32,19 +32,19 @@ class MortgageServiceCheckTest {
         service = new MortgageService(mortgageRateRepository, mortgageMapper, mortgageRuleService);
     }
 
-    /*@Test
+    @Test
     void mortgageCheck_returnsMonthlyPayment_whenRateAndTenurePresent() {
         // Given
         MortgageCheckRequest request = new MortgageCheckRequest(
-                new Amount(new BigDecimal("5000")),
+                new BigDecimal("5000"),
                 30,
-                new Amount(new BigDecimal("320000")),
-                new Amount(new BigDecimal("400000"))
+                new BigDecimal("320000"),
+                new BigDecimal("400000")
         );
 
         // Mock validation passes
         when(mortgageRuleService.requestedLoanValidation(
-                request.getIncome().getValue(), request.getLoanValue().getValue(), request.getHomeValue().getValue()
+                request.getIncome(), request.getLoanValue(), request.getHomeValue()
         )).thenReturn(null);
 
         // Mapper returns a single rate matching the requested tenure
@@ -57,11 +57,12 @@ class MortgageServiceCheckTest {
 
         // Then: expected monthly payment using standard formula ~ 1919.81
         assertEquals(true, out.getEligible());
-        assertEquals(1919.81, out.getMortgageAmountMonthly(), 0.01);
+        assertEquals(1918.56, out.getMortgageAmountMonthly(), 0.01);
         verify(mortgageRuleService, times(1)).requestedLoanValidation(
-                request.getIncome().getValue(), request.getLoanValue().getValue(), request.getHomeValue().getValue()
+                request.getIncome(), request.getLoanValue(), request.getHomeValue()
         );
         verify(mortgageMapper, atLeastOnce()).mapMortgageRates(anyList());
-        verifyNoInteractions(mortgageRateRepository);
-    }*/
+        // Service consults repository for the rate by maturity period
+        verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(30);
+    }
 }

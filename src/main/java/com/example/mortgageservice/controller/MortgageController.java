@@ -1,24 +1,17 @@
 package com.example.mortgageservice.controller;
 
-import com.example.mortgageservice.controller.dto.Amount;
 import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
 import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
 import com.example.mortgageservice.controller.exceptions.ApiError;
 import com.example.mortgageservice.service.MortgageService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -67,7 +60,7 @@ public class MortgageController {
                     })
             }
     )
-    @RequestMapping(method = RequestMethod.GET, value = "/interest-rates")
+    @GetMapping("/interest-rates")
     public ResponseEntity<MortgageRatesResponse> getInterestRates() {
         return ResponseEntity.ok(mortgageService.getInterestRates());
 
@@ -111,10 +104,9 @@ public class MortgageController {
                     })
             }
     )
-    @RequestMapping(method = RequestMethod.GET, value = "/mortgage-check")
-
-    public ResponseEntity<MortgageCheckResponse> mortgageCheck() {
-        MortgageCheckRequest mortgageCheckRequest = new MortgageCheckRequest(new Amount(new BigDecimal(5000)), 20, new Amount(new BigDecimal(30000)), new Amount(new BigDecimal(400000)));
+    @PostMapping("/mortgage-checking")
+    public ResponseEntity<MortgageCheckResponse> mortgageCheck(@Valid @RequestBody MortgageCheckRequest mortgageCheckRequest
+    ) {
         return ResponseEntity.ok(mortgageService.mortgageCheck(mortgageCheckRequest));
 
     }

@@ -17,5 +17,6 @@ public class InitialDataLoader implements CommandLineRunner {
         mortgageRateRepository.save(MortgageRates.builder().rate(3.9).mortgagePeriod(10).type("FIXED").build());
         mortgageRateRepository.save(MortgageRates.builder().rate(5.75).mortgagePeriod(15).type("FIXED").build());
         mortgageRateRepository.save(MortgageRates.builder().rate(7.5).mortgagePeriod(20).type("VARIABLE").build());
+        mortgageRateRepository.save(MortgageRates.builder().rate(8.5).mortgagePeriod(5).type("VARIABLE").build());
     }
 }

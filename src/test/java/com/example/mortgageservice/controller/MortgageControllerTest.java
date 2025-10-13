@@ -2,7 +2,6 @@ package com.example.mortgageservice.controller;
 
 import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
 import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
-import com.example.mortgageservice.controller.dto.Amount;
 import com.example.mortgageservice.controller.dto.MortgageRate;
 import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.service.MortgageService;
@@ -49,24 +48,24 @@ class MortgageControllerTest {
                 .andExpect(jsonPath("$.mortgageRates[0].interestType").value("FIXED"));
     }
 
-    /*@Test
+    @Test
     void mortgageCheck_returnsOkWithPayload() throws Exception {
         MortgageCheckRequest request = new MortgageCheckRequest(
-                new Amount(new BigDecimal("5000")),
+                new BigDecimal("10000"),
                 30,
-                new Amount(new BigDecimal("320000")),
-                new Amount(new BigDecimal("400000"))
+                new BigDecimal("20560"),
+                new BigDecimal("400000")
         );
 
-        MortgageCheckResponse response = new MortgageCheckResponse(true, 1919.81);
+        MortgageCheckResponse response = new MortgageCheckResponse(true, 207.18);
         when(mortgageService.mortgageCheck(request)).thenReturn(response);
 
-        mockMvc.perform(post("/api/mortgage-check")
+        mockMvc.perform(post("/api/mortgage-checking")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.eligible").value(true))
-                .andExpect(jsonPath("$.mortgageAmountMonthly").value(1919.81));
-    }*/
+                .andExpect(jsonPath("$.mortgageAmountMonthly").value(207.18));
+    }
 }
