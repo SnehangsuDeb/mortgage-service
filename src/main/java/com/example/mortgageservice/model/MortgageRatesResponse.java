@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +17,9 @@ import java.util.Objects;
 
 @Schema(name = "MortgageRatesResponse", description = "Wrapper object containing mortgage rates")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-10-13T17:12:32.542554800+05:30[Asia/Calcutta]", comments = "Generator version: 7.7.0")
-public class MortgageRatesResponse {
+public class MortgageRatesResponse implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
   @Valid
   private List<@Valid MortgageRate> mortgageRates = new ArrayList<>();

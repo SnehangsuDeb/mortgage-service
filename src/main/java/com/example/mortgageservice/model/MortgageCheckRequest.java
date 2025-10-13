@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -19,7 +21,9 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MortgageCheckRequest {
+public class MortgageCheckRequest implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
   @NotNull @Positive private BigDecimal income;
   @NotNull @Positive private Integer maturityPeriod;

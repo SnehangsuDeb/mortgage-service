@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Result of mortgage eligibility check
  */
@@ -11,7 +14,9 @@ import lombok.Data;
 @Data
 @Schema(name = "MortgageCheckResponse", description = "Result of mortgage eligibility check")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-10-13T17:12:32.542554800+05:30[Asia/Calcutta]", comments = "Generator version: 7.7.0")
-public class MortgageCheckResponse {
+public class MortgageCheckResponse implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
   private Boolean eligible;
 

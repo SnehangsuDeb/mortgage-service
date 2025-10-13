@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class MortgageRuleService {
-    private List<MortgageRule> rules;
+    private final List<MortgageRule> rules;
 
     public MortgageRuleService(List<MortgageRule> rules) {
         this.rules = rules;

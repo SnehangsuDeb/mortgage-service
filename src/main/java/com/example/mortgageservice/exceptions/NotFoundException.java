@@ -1,11 +1,13 @@
 package com.example.mortgageservice.exceptions;
 
-import lombok.Data;
 
-@Data
+import java.io.Serial;
+
 public class NotFoundException extends RuntimeException{
-    private String message;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public NotFoundException(String message) {
-        this.message = message;
+        super(message);
     }
 }

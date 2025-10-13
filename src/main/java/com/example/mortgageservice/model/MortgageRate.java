@@ -12,6 +12,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -22,7 +24,10 @@ import java.util.Objects;
 @Getter
 @Schema(name = "InterestRate", description = "Interest rate details")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-10-13T17:12:32.542554800+05:30[Asia/Calcutta]", comments = "Generator version: 7.7.0")
-public class MortgageRate {
+public class MortgageRate implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 1L;
 
   private Double rate;
 

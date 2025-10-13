@@ -1,11 +1,13 @@
 package com.example.mortgageservice.exceptions;
 
-import lombok.Data;
 
-@Data
+import java.io.Serial;
+
 public class NoContentException extends RuntimeException{
-    private String message;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public NoContentException(String message) {
-        this.message = message;
+        super(message);
     }
 }
