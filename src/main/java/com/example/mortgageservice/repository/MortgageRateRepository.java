@@ -1,4 +1,9 @@
 package com.example.mortgageservice.repository;
 
-public class MortgageRateRepository {
+
+import com.example.mortgageservice.controller.dto.InterestRate;
+
+import java.util.List;
+
+public interface MortgageRateRepository {
 }

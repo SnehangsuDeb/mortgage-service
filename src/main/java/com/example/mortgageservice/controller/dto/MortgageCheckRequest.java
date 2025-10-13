@@ -6,6 +6,7 @@ import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.Objects;
 
@@ -17,13 +18,10 @@ import java.util.Objects;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-10-13T17:12:32.542554800+05:30[Asia/Calcutta]", comments = "Generator version: 7.7.0")
 public class MortgageCheckRequest {
 
-  private Amount income;
-
-  private Integer maturityPeriod;
-
-  private Amount loanValue;
-
-  private Amount homeValue;
+  @NotNull private Amount income;
+  @NotNull @Positive private Integer maturityPeriod;
+  @NotNull private Amount loanValue;
+  @NotNull private Amount homeValue;
 
   public MortgageCheckRequest() {
     super();

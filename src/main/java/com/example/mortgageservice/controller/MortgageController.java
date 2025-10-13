@@ -1,10 +1,10 @@
 package com.example.mortgageservice.controller;
 
-import com.example.mortgageservice.api.ApiUtil;
-import com.example.mortgageservice.model.generated.ApiError;
-import com.example.mortgageservice.model.generated.InterestRatesResponse;
-import com.example.mortgageservice.model.generated.MortgageCheckRequest;
-import com.example.mortgageservice.model.generated.MortgageCheckResponse;
+import com.example.mortgageservice.controller.dto.InterestRatesResponse;
+import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
+import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
+import com.example.mortgageservice.controller.error.ApiError;
+import com.example.mortgageservice.service.MortgageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class MortgageController {
+
+    private final MortgageService mortgageService;
+
+    public MortgageController(MortgageService mortgageService) {
+        this.mortgageService = mortgageService;
+    }
 
     /**
      * GET /api/interest-rates : List available interest rates
@@ -70,7 +75,7 @@ public class MortgageController {
     )
     @RequestMapping(method = RequestMethod.GET, value = "/interest-rates")
     public ResponseEntity<InterestRatesResponse> getInterestRates() {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return ResponseEntity.ok(mortgageService.getInterestRates());
 
     }
 

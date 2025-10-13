@@ -180,17 +180,11 @@ components:
       description: Monetary amount with currency
       required:
         - value
-        - currency
       properties:
         value:
           type: number
           format: double
           example: 2500.00
-        currency:
-          type: string
-          description: ISO 4217 currency code
-          pattern: '^[A-Z]{3}$'
-          example: USD
     MortgageCheckRequest:
       type: object
       description: Mortgage check request payload
