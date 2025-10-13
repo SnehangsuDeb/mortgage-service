@@ -26,8 +26,6 @@ public class ApiError {
 
   private String cause;
 
-  private String error;
-
   private String message;
 
   private String path;

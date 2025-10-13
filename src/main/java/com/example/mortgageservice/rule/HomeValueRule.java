@@ -27,6 +27,6 @@ public class HomeValueRule implements MortgageRule{
         if (loanAmount.compareTo(homeValue) > 0) {
             return "Loan amount cannot exceed home value";
         }
-        return "";
+        return null;
     }
 }

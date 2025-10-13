@@ -26,6 +26,6 @@ public class IncomeRule implements MortgageRule{
             return "Loan amount cannot exceed 4 times the income";
         }
 
-        return "";
+        return null;
     }
 }

@@ -1,8 +1,12 @@
 package com.example.mortgageservice.controller;
 
+import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
+import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
+import com.example.mortgageservice.controller.dto.Amount;
 import com.example.mortgageservice.controller.dto.MortgageRate;
 import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.service.MortgageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -10,10 +14,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(MortgageController.class)
@@ -21,6 +27,9 @@ class MortgageControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private MortgageService mortgageService;
@@ -39,4 +48,25 @@ class MortgageControllerTest {
                 .andExpect(jsonPath("$.mortgageRates[0].tenure").value(15))
                 .andExpect(jsonPath("$.mortgageRates[0].interestType").value("FIXED"));
     }
+
+    /*@Test
+    void mortgageCheck_returnsOkWithPayload() throws Exception {
+        MortgageCheckRequest request = new MortgageCheckRequest(
+                new Amount(new BigDecimal("5000")),
+                30,
+                new Amount(new BigDecimal("320000")),
+                new Amount(new BigDecimal("400000"))
+        );
+
+        MortgageCheckResponse response = new MortgageCheckResponse(true, 1919.81);
+        when(mortgageService.mortgageCheck(request)).thenReturn(response);
+
+        mockMvc.perform(post("/api/mortgage-check")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.eligible").value(true))
+                .andExpect(jsonPath("$.mortgageAmountMonthly").value(1919.81));
+    }*/
 }

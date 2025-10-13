@@ -1,5 +1,6 @@
 package com.example.mortgageservice.controller;
 
+import com.example.mortgageservice.controller.dto.Amount;
 import com.example.mortgageservice.controller.dto.MortgageRatesResponse;
 import com.example.mortgageservice.controller.dto.MortgageCheckRequest;
 import com.example.mortgageservice.controller.dto.MortgageCheckResponse;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api")
@@ -108,11 +111,10 @@ public class MortgageController {
                     })
             }
     )
-    @RequestMapping(method = RequestMethod.POST, value = "/mortgage-check")
+    @RequestMapping(method = RequestMethod.GET, value = "/mortgage-check")
 
-    public ResponseEntity<MortgageCheckResponse> mortgageCheck(
-            @Parameter(name = "MortgageCheckRequest", description = "", required = true) @Valid @RequestBody MortgageCheckRequest mortgageCheckRequest
-    ) {
+    public ResponseEntity<MortgageCheckResponse> mortgageCheck() {
+        MortgageCheckRequest mortgageCheckRequest = new MortgageCheckRequest(new Amount(new BigDecimal(5000)), 20, new Amount(new BigDecimal(30000)), new Amount(new BigDecimal(400000)));
         return ResponseEntity.ok(mortgageService.mortgageCheck(mortgageCheckRequest));
 
     }
