@@ -34,7 +34,6 @@ class MortgageServiceCheckTest {
 
     @Test
     void mortgageCheck_returnsMonthlyPayment_whenRateAndTenurePresent() {
-        // Given
         MortgageCheckRequest request = new MortgageCheckRequest(
                 new BigDecimal("5000"),
                 30,
@@ -42,27 +41,21 @@ class MortgageServiceCheckTest {
                 new BigDecimal("400000")
         );
 
-        // Mock validation passes
         when(mortgageRuleService.requestedLoanValidation(
                 request.getIncome(), request.getLoanValue(), request.getHomeValue()
         )).thenReturn(null);
 
-        // Mapper returns a single rate matching the requested tenure
         MortgageRatesResponse response = new MortgageRatesResponse();
         response.setMortgageRates(Collections.singletonList(new MortgageRate(6.0, 30, MortgageRate.InterestTypeEnum.FIXED)));
         when(mortgageMapper.mapMortgageRates(anyList())).thenReturn(response);
 
-        // When
         MortgageCheckResponse out = service.mortgageCheck(request);
-
-        // Then: expected monthly payment using standard formula ~ 1919.81
         assertEquals(true, out.getEligible());
         assertEquals(1918.56, out.getMortgageAmountMonthly(), 0.01);
         verify(mortgageRuleService, times(1)).requestedLoanValidation(
                 request.getIncome(), request.getLoanValue(), request.getHomeValue()
         );
         verify(mortgageMapper, atLeastOnce()).mapMortgageRates(anyList());
-        // Service consults repository for the rate by maturity period
         verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(30);
     }
 }
