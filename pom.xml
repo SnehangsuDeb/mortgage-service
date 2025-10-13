@@ -95,6 +95,9 @@
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>false</interfaceOnly>
+                                <delegatePattern>true</delegatePattern>
+                                <useSpringController>true</useSpringController>
+                                <generateSpringApplication>false</generateSpringApplication>
                                 <useTags>true</useTags>
                                 <dateLibrary>java8</dateLibrary>
                             </configOptions>
