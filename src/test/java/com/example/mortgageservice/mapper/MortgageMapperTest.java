@@ -1,5 +1,7 @@
 package com.example.mortgageservice.mapper;
 
+import com.example.mortgageservice.exceptions.NoContentException;
+import com.example.mortgageservice.model.InterestTypeEnum;
 import com.example.mortgageservice.model.MortgageRate;
 import com.example.mortgageservice.model.MortgageRatesResponse;
 import com.example.mortgageservice.entities.MortgageRates;
@@ -14,19 +16,8 @@ class MortgageMapperTest {
     private final MortgageMapper mapper = new MortgageMapper();
 
     @Test
-    void mapInterestRates_returnsEmptyResponse_whenListIsNull() {
-        MortgageRatesResponse response = mapper.mapMortgageRates(null);
-        assertNotNull(response);
-        assertNotNull(response.getMortgageRates());
-        assertTrue(response.getMortgageRates().isEmpty());
-    }
-
-    @Test
-    void mapInterestRates_returnsEmptyResponse_whenListIsEmpty() {
-        MortgageRatesResponse response = mapper.mapMortgageRates(List.of());
-        assertNotNull(response);
-        assertNotNull(response.getMortgageRates());
-        assertTrue(response.getMortgageRates().isEmpty());
+    void mapInterestRates_returnsNoContent_whenListIsEmpty() {
+        assertThrows(NoContentException.class, () -> mapper.mapMortgageRates(List.of()));
     }
 
     @Test
@@ -39,17 +30,17 @@ class MortgageMapperTest {
         MortgageRatesResponse response = mapper.mapMortgageRates(stored);
 
         assertNotNull(response);
-        assertNotNull(response.getMortgageRates());
-        assertEquals(2, response.getMortgageRates().size());
+        assertNotNull(response.mortgageRates());
+        assertEquals(2, response.mortgageRates().size());
 
-        MortgageRate first = response.getMortgageRates().get(0);
-        assertEquals(3.9, first.getRate());
-        assertEquals(10, first.getTenure());
-        assertEquals(MortgageRate.InterestTypeEnum.FIXED, first.getInterestType());
+        MortgageRate first = response.mortgageRates().get(0);
+        assertEquals(3.9, first.rate());
+        assertEquals(10, first.tenure());
+        assertEquals(InterestTypeEnum.FIXED, first.interestType());
 
-        MortgageRate second = response.getMortgageRates().get(1);
-        assertEquals(5.75, second.getRate());
-        assertEquals(15, second.getTenure());
-        assertEquals(MortgageRate.InterestTypeEnum.VARIABLE, second.getInterestType());
+        MortgageRate second = response.mortgageRates().get(1);
+        assertEquals(5.75, second.rate());
+        assertEquals(15, second.tenure());
+        assertEquals(InterestTypeEnum.VARIABLE, second.interestType());
     }
 }

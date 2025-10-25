@@ -3,64 +3,45 @@ package com.example.mortgageservice.service;
 import com.example.mortgageservice.model.MortgageCheckRequest;
 import com.example.mortgageservice.model.MortgageCheckResponse;
 import com.example.mortgageservice.model.MortgageRate;
-import com.example.mortgageservice.exceptions.NotFoundException;
 import com.example.mortgageservice.mapper.MortgageMapper;
 import com.example.mortgageservice.model.MortgageRatesResponse;
 import com.example.mortgageservice.repository.MortgageRateRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class MortgageService {
     private final MortgageRateRepository mortgageRateRepository;
     private final MortgageMapper mortgageMapper;
     private final MortgageRuleService mortgageRuleService;
 
-    public MortgageService(MortgageRateRepository mortgageRateRepository,
-                           MortgageMapper mortgageMapper,
-                           MortgageRuleService mortgageRuleService) {
-        this.mortgageRateRepository = mortgageRateRepository;
-        this.mortgageMapper = mortgageMapper;
-        this.mortgageRuleService = mortgageRuleService;
-    }
-
     public MortgageRatesResponse getInterestRates() {
         return mortgageMapper.mapMortgageRates(mortgageRateRepository.findAll());
     }
 
-    private Optional<MortgageRatesResponse> getRateByMaturityPeriod(Integer maturityPeriod){
-        return Optional.of(
-                mortgageMapper.mapMortgageRates(
-                        Collections.singletonList(mortgageRateRepository.getRateByMortgagePeriod(maturityPeriod))
-                )
-        );
-    }
-
     public MortgageCheckResponse mortgageCheck(MortgageCheckRequest request){
         log.info("Mortgage check request received: {}", request);
-        var validation = mortgageRuleService.requestedLoanValidation(
-                request.getIncome(), request.getLoanValue(), request.getHomeValue());
-        if (validation != null) {
-            log.info("Validation error: {}", validation);
-            return new MortgageCheckResponse(false, null);
-        }
+        mortgageRuleService.requestedLoanValidation(request.income(), request.loanValue(), request.homeValue());
 
-        var rateResponse = getRateByMaturityPeriod(request.getMaturityPeriod())
-                .orElseThrow(() -> new NotFoundException(
-                        "No mortgage rates found for maturity period: " + request.getMaturityPeriod()));
+        var monthlyPayment = Optional.ofNullable(mortgageRateRepository.getRateByMortgagePeriod(request.maturityPeriod()))
+                .map(rateEntity -> mortgageMapper.mapMortgageRates(List.of(rateEntity)))
+                .map(MortgageRatesResponse::mortgageRates)
+                .flatMap(rates -> rates.stream().findFirst())
+                .map(MortgageRate::rate)
+                .map(annualRate -> calculateMonthlyAmountFromTotalLoanAmount(
+                        request.loanValue().doubleValue(),
+                        annualRate,
+                        request.maturityPeriod()
+                ))
+                .orElse(0.0);
 
-        if (rateResponse.getMortgageRates().isEmpty()) {
-            log.info("No mortgage rates found for maturity period: {}", request.getMaturityPeriod());
-            return new MortgageCheckResponse(false, null);
-        } else {
-            MortgageRate selectedRate = rateResponse.getMortgageRates().get(0);
-            Double monthly = calculateMonthlyAmountFromTotalLoanAmount(request, selectedRate);
-            return new MortgageCheckResponse(true, monthly);
-        }
+        return new MortgageCheckResponse(true, monthlyPayment);
+
     }
 
     /**
@@ -71,14 +52,13 @@ public class MortgageService {
      *  - if i == 0: payment = P / n
      *  - else: payment = P * i * (1 + i)^n / ((1 + i)^n - 1)
      */
-    private Double calculateMonthlyAmountFromTotalLoanAmount(MortgageCheckRequest request, MortgageRate mortgageRate) {
-        double principal = request.getLoanValue().doubleValue();
-        int months = Math.toIntExact((long) mortgageRate.getTenure() * 12);
+    private Double calculateMonthlyAmountFromTotalLoanAmount(double principal, double annualRate, int tenure) {
+        int months = Math.toIntExact((long) tenure * 12);
         if (months <= 0) {
-            return null;
+            return 0.0;
         }
 
-        double monthlyRate = (mortgageRate.getRate() == null ? 0.0 : mortgageRate.getRate()) / 100.0 / 12.0;
+        double monthlyRate = annualRate / 100.0 / 12.0;
         double payment;
         if (monthlyRate == 0.0) {
             payment = principal / months;

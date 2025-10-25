@@ -10,21 +10,11 @@ import java.io.Serializable;
 /**
  * Result of mortgage eligibility check
  */
-
-@Data
 @Schema(name = "MortgageCheckResponse", description = "Result of mortgage eligibility check")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-10-13T17:12:32.542554800+05:30[Asia/Calcutta]", comments = "Generator version: 7.7.0")
-public class MortgageCheckResponse implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-  private Boolean eligible;
-
-  private Double mortgageAmountMonthly;
-
-    public MortgageCheckResponse (Boolean eligible, Double mortgageAmountMonthly) {
-      this.eligible = eligible;
-      this.mortgageAmountMonthly = mortgageAmountMonthly;
-  }
-}
+public record MortgageCheckResponse (
+        @Schema(name = "eligible", description = "Mortgage eligibility")
+        Boolean eligible,
+        @Schema(name = "mortgageAmountMonthly", description = "Monthly mortgage amount")
+        Double mortgageAmountMonthly
+        ){}
 

@@ -32,15 +32,15 @@ class MortgageServiceTest {
 
     @Test
     void getInterestRates_fetchesEntities_andMapsToResponse() {
-        List<MortgageRates> entities = List.of(
+        var entities = List.of(
                 MortgageRates.builder().rate(3.9).mortgagePeriod(10).type("FIXED").build()
         );
-        MortgageRatesResponse mapped = new MortgageRatesResponse();
+        var mapped = new MortgageRatesResponse(List.of());
 
         when(mortgageRateRepository.findAll()).thenReturn(entities);
         when(mortgageMapper.mapMortgageRates(ArgumentMatchers.eq(entities))).thenReturn(mapped);
 
-        MortgageRatesResponse result = service.getInterestRates();
+        var result = service.getInterestRates();
 
         assertSame(mapped, result);
         verify(mortgageRateRepository, times(1)).findAll();

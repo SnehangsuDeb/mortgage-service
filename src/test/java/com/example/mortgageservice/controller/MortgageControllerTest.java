@@ -4,6 +4,7 @@ import com.example.mortgageservice.model.MortgageCheckRequest;
 import com.example.mortgageservice.model.MortgageCheckResponse;
 import com.example.mortgageservice.model.MortgageRate;
 import com.example.mortgageservice.model.MortgageRatesResponse;
+import com.example.mortgageservice.model.InterestTypeEnum;
 import com.example.mortgageservice.ratelimit.RateLimiterService;
 import com.example.mortgageservice.ratelimit.RateLimitingFilter;
 import com.example.mortgageservice.service.MortgageService;
@@ -41,8 +42,9 @@ class MortgageControllerTest {
 
     @Test
     void getInterestRates_returnsOkWithPayload() throws Exception {
-        MortgageRatesResponse response = new MortgageRatesResponse();
-        response.setMortgageRates(List.of(new MortgageRate(5.25, 15, MortgageRate.InterestTypeEnum.FIXED)));
+        var response = new MortgageRatesResponse(
+                List.of(new MortgageRate(5.25, 15, InterestTypeEnum.FIXED))
+        );
 
         when(mortgageService.getInterestRates()).thenReturn(response);
 
@@ -56,14 +58,14 @@ class MortgageControllerTest {
 
     @Test
     void mortgageCheck_returnsOkWithPayload() throws Exception {
-        MortgageCheckRequest request = new MortgageCheckRequest(
-                new BigDecimal("10000"),
+        var request = new MortgageCheckRequest(
+                BigDecimal.valueOf(10000),
                 30,
-                new BigDecimal("20560"),
-                new BigDecimal("400000")
+                BigDecimal.valueOf(20560),
+                BigDecimal.valueOf(400000)
         );
 
-        MortgageCheckResponse response = new MortgageCheckResponse(true, 207.18);
+        var response = new MortgageCheckResponse(true, 207.18);
         when(mortgageService.mortgageCheck(request)).thenReturn(response);
 
         mockMvc.perform(post("/api/mortgage-checking")

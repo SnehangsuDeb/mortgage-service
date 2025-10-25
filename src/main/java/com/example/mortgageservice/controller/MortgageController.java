@@ -10,18 +10,16 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class MortgageController {
 
     private final MortgageService mortgageService;
-
-    public MortgageController(MortgageService mortgageService) {
-        this.mortgageService = mortgageService;
-    }
 
     /**
      * GET /api/interest-rates : List available interest rates
@@ -61,8 +59,8 @@ public class MortgageController {
             }
     )
     @GetMapping("/interest-rates")
-    public ResponseEntity<MortgageRatesResponse> getInterestRates() {
-        return ResponseEntity.ok(mortgageService.getInterestRates());
+    public MortgageRatesResponse getInterestRates() {
+        return mortgageService.getInterestRates();
 
     }
 
@@ -105,9 +103,9 @@ public class MortgageController {
             }
     )
     @PostMapping("/mortgage-checking")
-    public ResponseEntity<MortgageCheckResponse> mortgageCheck(@Valid @RequestBody MortgageCheckRequest mortgageCheckRequest
+    public MortgageCheckResponse mortgageCheck(@Valid @RequestBody MortgageCheckRequest mortgageCheckRequest
     ) {
-        return ResponseEntity.ok(mortgageService.mortgageCheck(mortgageCheckRequest));
+        return mortgageService.mortgageCheck(mortgageCheckRequest);
 
     }
 }

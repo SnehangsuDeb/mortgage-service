@@ -17,17 +17,14 @@ import java.math.BigDecimal;
  */
 
 @Schema(name = "MortgageCheckRequest", description = "Mortgage check request payload")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-10-13T17:12:32.542554800+05:30[Asia/Calcutta]", comments = "Generator version: 7.7.0")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class MortgageCheckRequest implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-  @NotNull @Positive private BigDecimal income;
-  @NotNull @Positive private Integer maturityPeriod;
-  @NotNull @Positive private BigDecimal loanValue;
-  @NotNull @Positive private BigDecimal homeValue;
-}
+public record MortgageCheckRequest(
+        @Schema(name = "income", description = "Monthly income")
+        @NotNull @Positive BigDecimal income,
+        @Schema(name = "maturityPeriod", description = "Maturity period in years")
+        @NotNull @Positive Integer maturityPeriod,
+        @Schema(name = "loanValue", description = "Loan amount")
+        @NotNull @Positive BigDecimal loanValue,
+        @Schema(name = "homeValue", description = "Home value")
+        @NotNull @Positive BigDecimal homeValue
+) {}
 
