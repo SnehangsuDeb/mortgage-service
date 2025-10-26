@@ -28,17 +28,16 @@ public class MortgageService {
         log.info("Mortgage check request received: {}", request);
         mortgageRuleService.requestedLoanValidation(request.income(), request.loanValue(), request.homeValue());
 
-        var monthlyPayment = Optional.ofNullable(mortgageRateRepository.getRateByMortgagePeriod(request.maturityPeriod()))
-                .map(rateEntity -> mortgageMapper.mapMortgageRates(List.of(rateEntity)))
-                .map(MortgageRatesResponse::mortgageRates)
-                .flatMap(rates -> rates.stream().findFirst())
-                .map(MortgageRate::rate)
-                .map(annualRate -> calculateMonthlyAmountFromTotalLoanAmount(
-                        request.loanValue().doubleValue(),
-                        annualRate,
-                        request.maturityPeriod()
-                ))
-                .orElse(0.0);
+        var rateEntity = mortgageRateRepository.getRateByMortgagePeriod(request.maturityPeriod());
+        if (rateEntity == null) {
+            return new MortgageCheckResponse(false, 0.0);
+        }
+
+        double monthlyPayment = calculateMonthlyAmountFromTotalLoanAmount(
+                request.loanValue().doubleValue(),
+                rateEntity.getRate(),
+                request.maturityPeriod()
+        );
 
         return new MortgageCheckResponse(true, monthlyPayment);
 
@@ -57,7 +56,6 @@ public class MortgageService {
         if (months <= 0) {
             return 0.0;
         }
-
         double monthlyRate = annualRate / 100.0 / 12.0;
         double payment;
         if (monthlyRate == 0.0) {

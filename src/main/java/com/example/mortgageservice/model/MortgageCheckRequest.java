@@ -1,15 +1,8 @@
 package com.example.mortgageservice.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -27,4 +20,3 @@ public record MortgageCheckRequest(
         @Schema(name = "homeValue", description = "Home value")
         @NotNull @Positive BigDecimal homeValue
 ) {}
-

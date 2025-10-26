@@ -16,8 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
@@ -47,11 +46,6 @@ class MortgageServiceCheckTest {
                 .rate(6.0).mortgagePeriod(30).type("FIXED").build();
         when(mortgageRateRepository.getRateByMortgagePeriod(30)).thenReturn(entity);
 
-        var response = new MortgageRatesResponse(
-                List.of(new MortgageRate(6.0, 30, InterestTypeEnum.FIXED))
-        );
-        when(mortgageMapper.mapMortgageRates(List.of(entity))).thenReturn(response);
-
         var out = service.mortgageCheck(request);
         assertTrue(out.eligible());
         assertEquals(1918.56, out.mortgageAmountMonthly(), 0.01);
@@ -59,8 +53,8 @@ class MortgageServiceCheckTest {
         verify(mortgageRuleService, times(1)).requestedLoanValidation(
                 request.income(), request.loanValue(), request.homeValue()
         );
-        verify(mortgageMapper, times(1)).mapMortgageRates(List.of(entity));
         verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(30);
+        verifyNoInteractions(mortgageMapper);
     }
 
     @Test
@@ -73,10 +67,11 @@ class MortgageServiceCheckTest {
 
         var out = service.mortgageCheck(request);
 
-        assertTrue(out.eligible());
+        assertFalse(out.eligible());
         assertEquals(0.0, out.mortgageAmountMonthly(), 0.0);
-        verify(mortgageMapper, never()).mapMortgageRates(anyList());
         verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(15);
+        verifyNoInteractions(mortgageMapper);
+
     }
 
     @Test
@@ -90,18 +85,13 @@ class MortgageServiceCheckTest {
                 .rate(0.0).mortgagePeriod(30).type("FIXED").build();
         when(mortgageRateRepository.getRateByMortgagePeriod(30)).thenReturn(entity);
 
-        var response = new MortgageRatesResponse(
-                List.of(new MortgageRate(0.0, 30, InterestTypeEnum.FIXED))
-        );
-        when(mortgageMapper.mapMortgageRates(List.of(entity))).thenReturn(response);
-
         var out = service.mortgageCheck(request);
 
         // 360,000 / (30*12) = 1000.0 when interest is zero
         assertTrue(out.eligible());
         assertEquals(1000.0, out.mortgageAmountMonthly(), 0.0);
         verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(30);
-        verify(mortgageMapper, times(1)).mapMortgageRates(List.of(entity));
+        verifyNoInteractions(mortgageMapper);
     }
 
     @Test
@@ -115,7 +105,7 @@ class MortgageServiceCheckTest {
 
         var out = service.mortgageCheck(request);
 
-        assertTrue(out.eligible());
+        assertFalse(out.eligible());
         assertEquals(0.0, out.mortgageAmountMonthly(), 0.0);
         verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(0);
         verify(mortgageMapper, never()).mapMortgageRates(anyList());

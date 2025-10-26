@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -86,9 +85,6 @@ public class MortgageController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }),
                     @ApiResponse(responseCode = "403", description = "Forbidden", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
-                    }),
-                    @ApiResponse(responseCode = "422", description = "Unprocessable entity", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
                     }),
                     @ApiResponse(responseCode = "429", description = "Too many requests", content = {

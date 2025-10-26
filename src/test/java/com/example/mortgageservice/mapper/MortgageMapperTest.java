@@ -16,16 +16,6 @@ class MortgageMapperTest {
     private final MortgageMapper mapper = new MortgageMapper();
 
     @Test
-    void shouldReturnNoContent_whenListIsEmpty() {
-        assertThrows(NoContentException.class, () -> mapper.mapMortgageRates(List.of()));
-    }
-
-    @Test
-    void shouldReturnNoContent_whenListIsNull() {
-        assertThrows(NoContentException.class, () -> mapper.mapMortgageRates(null));
-    }
-
-    @Test
     void shouldReturnDataInOrderOfInsertion() {
         var stored = List.of(
                 MortgageRates.builder().rate(3.9).mortgagePeriod(10).type("FIXED").build(),

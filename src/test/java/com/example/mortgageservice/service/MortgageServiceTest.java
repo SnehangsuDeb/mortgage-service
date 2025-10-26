@@ -75,7 +75,6 @@ class MortgageServiceTest {
         verify(mortgageRuleService, times(1))
                 .requestedLoanValidation(request.income(), request.loanValue(), request.homeValue());
         verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(30);
-        verify(mortgageMapper, times(1)).mapMortgageRates(List.of(entity));
     }
 
     @Test
@@ -88,7 +87,7 @@ class MortgageServiceTest {
 
         var out = service.mortgageCheck(request);
 
-        assertTrue(out.eligible());
+        assertFalse(out.eligible());
         assertEquals(0.0, out.mortgageAmountMonthly(), 0.0);
         verify(mortgageRuleService, times(1))
                 .requestedLoanValidation(request.income(), request.loanValue(), request.homeValue());
@@ -113,7 +112,6 @@ class MortgageServiceTest {
         assertTrue(out.eligible());
         assertEquals(1000.0, out.mortgageAmountMonthly(), 0.0); // 360000 / (30*12)
         verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(30);
-        verify(mortgageMapper, times(1)).mapMortgageRates(List.of(entity));
     }
 
     @Test
@@ -126,7 +124,7 @@ class MortgageServiceTest {
 
         var out = service.mortgageCheck(request);
 
-        assertTrue(out.eligible());
+        assertFalse(out.eligible());
         assertEquals(0.0, out.mortgageAmountMonthly(), 0.0);
         verify(mortgageRuleService, times(1))
                 .requestedLoanValidation(request.income(), request.loanValue(), request.homeValue());
@@ -149,9 +147,8 @@ class MortgageServiceTest {
         var out = service.mortgageCheck(request);
 
         assertTrue(out.eligible());
-        assertEquals(0.0, out.mortgageAmountMonthly(), 0.0);
+        assertEquals(1319.91, out.mortgageAmountMonthly(), 0.0);
         verify(mortgageRateRepository, times(1)).getRateByMortgagePeriod(20);
-        verify(mortgageMapper, times(1)).mapMortgageRates(List.of(entity));
     }
 
     @Test

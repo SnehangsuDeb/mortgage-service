@@ -27,6 +27,6 @@ public class InitialDataLoader implements CommandLineRunner {
                 MortgageRates.builder().rate(7.5).mortgagePeriod(20).type("VARIABLE").build(),
                 MortgageRates.builder().rate(8.5).mortgagePeriod(5).type("VARIABLE").build(),
                 MortgageRates.builder().rate(6.5).mortgagePeriod(30).type("VARIABLE").build())).size();
-        log.info("Seeded initial MortgageRates data ({} rows).", count);
+        log.info("Seeding {} MortgageRates", count);
     }
 }

@@ -14,4 +14,3 @@ public record MortgageRate (
         @Schema(name = "interestType", description = "Type of interest")
         InterestTypeEnum interestType
 ) {}
-
