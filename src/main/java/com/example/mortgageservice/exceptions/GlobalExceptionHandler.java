@@ -3,13 +3,18 @@ package com.example.mortgageservice.exceptions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 import javax.naming.ServiceUnavailableException;
 import java.time.OffsetDateTime;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
@@ -19,6 +24,39 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleMethodArgumentNotValid(BadRequestException ex, HttpServletRequest req) {
         log.warn("Validation failed: {} - path: {}", ex.getMessage(), req.getRequestURI());
         return toResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), req, ex.getCause());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiError> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest req) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        log.warn("Bean validation failed: {} - path: {}", message, req.getRequestURI());
+        return toResponse(HttpStatus.BAD_REQUEST, message, req, ex.getCause());
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ApiError> handleBindException(BindException ex, HttpServletRequest req) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        log.warn("Bind validation failed: {} - path: {}", message, req.getRequestURI());
+        return toResponse(HttpStatus.BAD_REQUEST, message, req, ex.getCause());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiError> handleConstraintViolation(ConstraintViolationException ex, HttpServletRequest req) {
+        String message = ex.getConstraintViolations().stream()
+                .map(v -> v.getPropertyPath() + ": " + v.getMessage())
+                .collect(Collectors.joining(", "));
+        log.warn("Constraint violation: {} - path: {}", message, req.getRequestURI());
+        return toResponse(HttpStatus.BAD_REQUEST, message, req, ex.getCause());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> handleNotReadable(HttpMessageNotReadableException ex, HttpServletRequest req) {
+        log.warn("Malformed request: {} - path: {}", ex.getMostSpecificCause().getMessage(), req.getRequestURI());
+        return toResponse(HttpStatus.BAD_REQUEST, "Malformed JSON request", req, ex.getCause());
     }
 
     @ExceptionHandler({NotFoundException.class})

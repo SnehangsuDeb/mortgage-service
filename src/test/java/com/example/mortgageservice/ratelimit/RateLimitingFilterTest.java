@@ -83,6 +83,7 @@ class RateLimitingFilterTest {
         assertTrue(body.contains("\"status\":429"));
         assertTrue(body.contains("\"message\":\"Rate limit exceeded"));
         assertTrue(body.contains("\"path\":\"/api/test\""));
+        assertNotNull(res.getContentType());
         assertTrue(res.getContentType().contains("application/json"));
         verify(limiter, times(1)).allow(anyString());
     }
