@@ -1,0 +1,249 @@
+openapi: 3.0.3
+info:
+  title: Mortgage Service API
+  version: v1
+  description: API documentation for mortgage-service
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /api/interest-rates:
+    get:
+      tags:
+        - Mortgage
+      summary: List available interest rates
+      operationId: getInterestRates
+      responses:
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: Interest rates not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '204':
+          description: No content
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterestRatesResponse'
+              examples:
+                sample:
+                  summary: Interest Rates
+                  value:
+                    interestRates:
+                      - rate: 5.25
+                        tenure: 15
+                        interestType: FIXED
+                      - rate: 5.75
+                        tenure: 30
+                        interestType: FIXED
+                      - rate: 4.10
+                        tenure: 5
+                        interestType: VARIABLE
+  /api/mortgage-check:
+    post:
+      tags:
+        - Mortgage
+      summary: Evaluate mortgage check
+      operationId: mortgageCheck
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MortgageCheckRequest'
+            examples:
+              sample:
+                summary: mortgage-check request
+                value:
+                  income: 7500.00
+                  maturityPeriod: 30
+                  loanValue: 320000.00
+                  homeValue: 400000.00
+      responses:
+        '200':
+          description: Mortgage Details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MortgageCheckResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Standard error response
+      required:
+        - timestamp
+        - status
+        - error
+        - path
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Time the error occurred
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+        error:
+          type: string
+          description: Error reason
+        message:
+          type: string
+          description: Human-readable error message
+        path:
+          type: string
+          description: Request path
+    Amount:
+      type: object
+      description: Monetary amount with currency
+      required:
+        - value
+      properties:
+        value:
+          type: number
+          format: double
+          example: 2500.00
+    MortgageCheckRequest:
+      type: object
+      description: Mortgage check request payload
+      required:
+        - income
+        - maturityPeriod
+        - loanValue
+        - homeValue
+      properties:
+        income:
+          $ref: '#/components/schemas/Amount'
+        maturityPeriod:
+          type: integer
+          minimum: 1
+          description: Maturity period in years
+          example: 30
+        loanValue:
+          $ref: '#/components/schemas/Amount'
+        homeValue:
+          $ref: '#/components/schemas/Amount'
+    Percentage:
+      type: number
+      format: double
+      description: Percentage value (0-100)
+      minimum: 0
+      maximum: 100
+      example: 5.75
+    MortgageCheckResponse:
+      type: object
+      description: Result of mortgage eligibility check
+      properties:
+        eligible:
+          type: boolean
+          description: Eligibility decision
+          example: true
+        mortgageAmountMonthly:
+          type: number
+          format: double
+          description: Monthly mortgage amount
+          example: 1500
+    InterestRate:
+      type: object
+      description: Interest rate details
+      required:
+        - rate
+        - tenure
+        - interestType
+      properties:
+        rate:
+          $ref: '#/components/schemas/Percentage'
+        tenure:
+          type: integer
+          minimum: 1
+          description: Tenure in years
+          example: 30
+        interestType:
+          type: string
+          description: Type of interest
+          enum: [FIXED, VARIABLE]
+          example: FIXED
+    InterestRatesResponse:
+      type: object
+      description: Wrapper object containing interest rates
+      properties:
+        interestRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestRate'
